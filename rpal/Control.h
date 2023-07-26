@@ -1,6 +1,5 @@
 #include "lexer.h"
 #include "treeNode.h"
-
 #include <string>
 #include <stdio.h>
 #include <cstdlib>
@@ -9,8 +8,6 @@
 
 class Control{
 public:
-  void addCtrl(treeNode* node, int , string,  vector<string> *, Control*, int);
-  void pretty_print();
   enum Type{
     ENV = 1 ,
     DELTA = 2 ,
@@ -46,7 +43,11 @@ public:
     INTEGER = 32 ,
     TUPLE = 33
     };
+  void addCtrl(treeNode* node, int , string,  vector<string> *, Control*, int);
+  void pretty_print();
+
   string toStr();
+
   Control( Control *cntrl);
   Control(Control::Type type, int index);
   Control(Control::Type type,vector<string> *variables, Control *del_ptr, int delta_index);
@@ -55,13 +56,15 @@ public:
   Control(Control::Type type, string value);
   Control();
   Control(Control::Type type);
+
   vector<Control *> *ctrlStruct;
   vector<string> variables;
   vector<Control *> ctrlTuples;
-  int associatedENV;
-  Type type;
+
+  int ass_env;
+  Type controlType;
   int index;
-  string ctrlVal;
+  string controlVal;
   Control *delta;
 
 };

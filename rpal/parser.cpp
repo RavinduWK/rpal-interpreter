@@ -1,10 +1,3 @@
-/*
- * parser.cpp
- *
- *  Created on: Mar 1, 2016
- *      Author: sachin
- */
-
 #include "parser.h"
 
 parser::parser(lexer* lexr){
@@ -59,6 +52,8 @@ void parser::parse(){
 	if (PARSERLOGS) printf ("Parsing Finished. AST Generated\n");
 }
 
+// Implement your keyword detection logic here.
+// Example: (This is just a basic example, you should customize it)
 bool parser::isKeyword(string val){
     if (val == "in" || val == "where" || val == "." || val == "aug" || val == "and" || val == "or"
 		|| val == "&" || val == "not" || val == "gr" || val == "ge" || val == "ls" || val == "le"
@@ -69,6 +64,9 @@ bool parser::isKeyword(string val){
       return false;
 }
 
+// Implement your read function here.
+// This function should read the next token and validate if it matches the expected token string.
+// If it doesn't match, print an error message and exit.
 void parser::read(string tokStr){
     if (PARSERLOGS) printf ("read() args %s\\, match %s\\\n", tokStr.c_str(), nextToken->tokValue.c_str());
     if (!(nextToken->tokValue == tokStr)){
@@ -82,6 +80,9 @@ void parser::read(string tokStr){
     }while (nextToken->tokType == TOK_DELETE);
 }
 
+// Implement your buildTree function here.
+// This function should create a new tree node with the given nodeStr and type, and add it to the treeStack.
+// If the node has child nodes, you need to pop the required number of nodes from the treeStack and link them accordingly.
 void parser::buildTree(string nodeStr, int numChildNodes, int type){
     if (PARSERLOGS) printf ("buildTree. Current Tree Size = %d, Node to add = %s, numChild = %d\n", (int)treeStack.size(), nodeStr.c_str(), numChildNodes);
     int finalSize = treeStack.size() - numChildNodes + 1;
@@ -125,6 +126,9 @@ void parser::buildTree(string nodeStr, int numChildNodes, int type){
     if (PARSERLOGS) printf ("BuildTree Success. Stack Size = %d\n", (int)treeStack.size());
 }
 
+// Implement your to_s function here.
+// This function should convert the given tree node to a string representation.
+// It is useful for pretty printing the abstract syntax tree.
 string parser::to_s(treeNode* node)
  {
    string str ;
@@ -142,6 +146,8 @@ string parser::to_s(treeNode* node)
    return NULL;
  }
 
+// Implement your treePrettyPrint function here.
+// This function should print the abstract syntax tree in a pretty format.
 void parser::treePrettyPrint(treeNode* topNode, int numDots){
 	int numDots1 = numDots;
 	while (numDots1 > 0) {

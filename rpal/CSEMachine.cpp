@@ -1,10 +1,3 @@
-/*
- * CSEMachine.cpp
- *
- *  Created on: Apr 21, 2016
- *      Author: sachin
- */
-
 #include "CSEMachine.h"
 
 CSEMachine::CSEMachine(treeNode* topNode) {
@@ -31,7 +24,7 @@ bool CSEMachine::checkInbuilt(string funcName) {
     }
 }
 
-void CSEMachine::applyBinaryOPR(int type){
+void CSEMachine::binaryOperation(int type){
 
     control.pop_back();
     Control *rand1 = execStack.top() ;
@@ -39,14 +32,14 @@ void CSEMachine::applyBinaryOPR(int type){
     Control *rand2 = execStack.top() ;
     execStack.pop();
     Control *result = new Control() ;
-    result->type = Control::INTEGER;
+    result->controlType = Control::INTEGER;
     switch(type)
       {
       case Control::AUG :
-    result->type = Control::TUPLE;
+    result->controlType = Control::TUPLE;
     result->ctrlTuples;
-    if( rand1->type != Control::NIL ){
-      if( rand1->type == Control::TUPLE){
+    if( rand1->controlType != Control::NIL ){
+      if( rand1->controlType == Control::TUPLE){
         for(int i=0;i<rand1->ctrlTuples.size(); i++)
           result->ctrlTuples.push_back(rand1->ctrlTuples.at(i));
       }
@@ -54,8 +47,8 @@ void CSEMachine::applyBinaryOPR(int type){
         result->ctrlTuples.push_back(rand1) ;
       }
     }
-    if( rand2->type != Control::NIL ){
-      if( rand2->type == Control::TUPLE){
+    if( rand2->controlType != Control::NIL ){
+      if( rand2->controlType == Control::TUPLE){
         for(int i=0;i<rand2->ctrlTuples.size(); i++)
           result->ctrlTuples.push_back(rand2->ctrlTuples.at(i));
       }
@@ -64,8 +57,8 @@ void CSEMachine::applyBinaryOPR(int type){
     }
     break ;
       case Control::EXP :
-    if(rand1->type == Control::INTEGER && rand2->type == Control::INTEGER) {
-        result->ctrlVal = to_string(pow(atoi(rand1->ctrlVal.c_str()), atoi(rand2->ctrlVal.c_str())));
+    if(rand1->controlType == Control::INTEGER && rand2->controlType == Control::INTEGER) {
+        result->controlVal = to_string(pow(atoi(rand1->controlVal.c_str()), atoi(rand2->controlVal.c_str())));
         break ;
       }
     else {
@@ -74,11 +67,11 @@ void CSEMachine::applyBinaryOPR(int type){
       }
     break ;
       case Control::GR :
-    if(rand1->type == Control::INTEGER && rand2->type == Control::INTEGER){
-      if( atoi(rand1->ctrlVal.c_str()) > atoi(rand2->ctrlVal.c_str()) )
-        result->type = Control::TRUE;
+    if(rand1->controlType == Control::INTEGER && rand2->controlType == Control::INTEGER){
+      if( atoi(rand1->controlVal.c_str()) > atoi(rand2->controlVal.c_str()) )
+        result->controlType = Control::TRUE;
       else
-        result->type = Control::FALSE;
+        result->controlType = Control::FALSE;
       break ;
     }
     else{
@@ -87,11 +80,11 @@ void CSEMachine::applyBinaryOPR(int type){
     }
     break ;
       case Control::GE :
-    if(rand1->type == Control::INTEGER && rand2->type == Control::INTEGER) {
-        if( atoi(rand1->ctrlVal.c_str()) >= atoi(rand2->ctrlVal.c_str()) )
-          result->type = Control::TRUE;
+    if(rand1->controlType == Control::INTEGER && rand2->controlType == Control::INTEGER) {
+        if( atoi(rand1->controlVal.c_str()) >= atoi(rand2->controlVal.c_str()) )
+          result->controlType = Control::TRUE;
         else
-          result->type = Control::FALSE;
+          result->controlType = Control::FALSE;
         break ;
       }
     else {
@@ -100,11 +93,11 @@ void CSEMachine::applyBinaryOPR(int type){
       }
     break ;
       case Control::LS :
-    if(rand1->type == Control::INTEGER && rand2->type == Control::INTEGER) {
-        if( atoi(rand1->ctrlVal.c_str()) < atoi(rand2->ctrlVal.c_str()) )
-          result->type = Control::TRUE;
+    if(rand1->controlType == Control::INTEGER && rand2->controlType == Control::INTEGER) {
+        if( atoi(rand1->controlVal.c_str()) < atoi(rand2->controlVal.c_str()) )
+          result->controlType = Control::TRUE;
         else
-          result->type = Control::FALSE;
+          result->controlType = Control::FALSE;
         break ;
       }
     else {
@@ -113,11 +106,11 @@ void CSEMachine::applyBinaryOPR(int type){
       }
     break ;
       case Control::LE :
-    if(rand1->type == Control::INTEGER && rand2->type == Control::INTEGER) {
-        if( atoi(rand1->ctrlVal.c_str()) <= atoi(rand2->ctrlVal.c_str()) )
-          result->type = Control::TRUE;
+    if(rand1->controlType == Control::INTEGER && rand2->controlType == Control::INTEGER) {
+        if( atoi(rand1->controlVal.c_str()) <= atoi(rand2->controlVal.c_str()) )
+          result->controlType = Control::TRUE;
         else
-          result->type = Control::FALSE;
+          result->controlType = Control::FALSE;
         break ;
       }
     else {
@@ -126,20 +119,20 @@ void CSEMachine::applyBinaryOPR(int type){
       }
     break ;
       case Control::EQ :
-    if( rand1->type == Control::STRING && rand2->type == Control::STRING) {
-        if( rand1->ctrlVal.compare(rand2->ctrlVal) == 0)
-          result->type = Control::TRUE;
+    if( rand1->controlType == Control::STRING && rand2->controlType == Control::STRING) {
+        if( rand1->controlVal.compare(rand2->controlVal) == 0)
+          result->controlType = Control::TRUE;
         else
-          result->type = Control::FALSE;
+          result->controlType = Control::FALSE;
                 }
-    else if( rand1->type == Control::INTEGER && rand2->type == Control::INTEGER )  {
-        if( rand1->ctrlVal == rand2->ctrlVal )
-          result->type = Control::TRUE;
+    else if( rand1->controlType == Control::INTEGER && rand2->controlType == Control::INTEGER )  {
+        if( rand1->controlVal == rand2->controlVal )
+          result->controlType = Control::TRUE;
         else
-          result->type = Control::FALSE;
+          result->controlType = Control::FALSE;
       }
-    else if((rand1->type == Control::TRUE || rand1->type == Control::FALSE) && (rand1->type == Control::TRUE || rand2->type == Control::FALSE)){
-        result->type = rand1->type == rand2->type?Control::TRUE: Control::FALSE;
+    else if((rand1->controlType == Control::TRUE || rand1->controlType == Control::FALSE) && (rand1->controlType == Control::TRUE || rand2->controlType == Control::FALSE)){
+        result->controlType = rand1->controlType == rand2->controlType?Control::TRUE: Control::FALSE;
       }
     else {
         cout << "Incompatible arguments for the operator 'EQ'" ;
@@ -147,20 +140,20 @@ void CSEMachine::applyBinaryOPR(int type){
       }
     break ;
       case Control::NE :
-    if( rand1->type == Control::STRING && rand2->type == Control::STRING ) {
-        if( rand1->ctrlVal.compare(rand2->ctrlVal) != 0)
-          result->type = Control::TRUE;
+    if( rand1->controlType == Control::STRING && rand2->controlType == Control::STRING ) {
+        if( rand1->controlVal.compare(rand2->controlVal) != 0)
+          result->controlType = Control::TRUE;
         else
-          result->type = Control::FALSE;
+          result->controlType = Control::FALSE;
                 }
-    else if( rand1->type == Control::INTEGER && rand2->type == Control::INTEGER ) {
-        if( rand1->ctrlVal != rand2->ctrlVal)
-          result->type = Control::TRUE;
+    else if( rand1->controlType == Control::INTEGER && rand2->controlType == Control::INTEGER ) {
+        if( rand1->controlVal != rand2->controlVal)
+          result->controlType = Control::TRUE;
         else
-          result->type = Control::FALSE;
+          result->controlType = Control::FALSE;
       }
-    else if((rand1->type == Control::TRUE || rand1->type == Control::FALSE) && (rand1->type == Control::TRUE || rand2->type == Control::FALSE)){
-        result->type = rand1->type != rand2->type?Control::TRUE: Control::FALSE;
+    else if((rand1->controlType == Control::TRUE || rand1->controlType == Control::FALSE) && (rand1->controlType == Control::TRUE || rand2->controlType == Control::FALSE)){
+        result->controlType = rand1->controlType != rand2->controlType?Control::TRUE: Control::FALSE;
       }
     else {
         cout << "Incompatible arguments for the operator 'NE'" ;
@@ -168,12 +161,12 @@ void CSEMachine::applyBinaryOPR(int type){
       }
     break ;
       case Control::OR :
-    if( (rand1->type == Control::TRUE || rand1->type == Control::FALSE ) &&
-        (rand2->type == Control::TRUE || rand2->type == Control::FALSE) ) {
-        bool op1 = (rand1->type == Control::TRUE )? true : false ;
-        bool op2 = ( rand2->type == Control::TRUE )? true : false ;
+    if( (rand1->controlType == Control::TRUE || rand1->controlType == Control::FALSE ) &&
+        (rand2->controlType == Control::TRUE || rand2->controlType == Control::FALSE) ) {
+        bool op1 = (rand1->controlType == Control::TRUE )? true : false ;
+        bool op2 = ( rand2->controlType == Control::TRUE )? true : false ;
         bool res = op1 | op2 ;
-        result->type =res? Control::TRUE : Control::FALSE;
+        result->controlType =res? Control::TRUE : Control::FALSE;
       }
     else {
         cout << "Incompatible arguments for the operator 'OR'" ;
@@ -181,12 +174,12 @@ void CSEMachine::applyBinaryOPR(int type){
       }
     break ;
       case Control::AND_LOGICAL :
-    if( (rand1->type == Control::TRUE || rand1->type == Control::FALSE ) &&
-        (rand2->type == Control::TRUE || rand2->type == Control::FALSE) ) {
-        bool op1 = (rand1->type == Control::TRUE)?true:false;
-        bool op2 = (rand2->type == Control::TRUE)?true:false;
+    if( (rand1->controlType == Control::TRUE || rand1->controlType == Control::FALSE ) &&
+        (rand2->controlType == Control::TRUE || rand2->controlType == Control::FALSE) ) {
+        bool op1 = (rand1->controlType == Control::TRUE)?true:false;
+        bool op2 = (rand2->controlType == Control::TRUE)?true:false;
         bool res = op1 & op2;
-        result->type = res? Control::TRUE : Control::FALSE;
+        result->controlType = res? Control::TRUE : Control::FALSE;
       }
     else {
         cout << "Incompatible arguments for the operator 'AND'" ;
@@ -194,8 +187,8 @@ void CSEMachine::applyBinaryOPR(int type){
       }
     break ;
       case Control::ADD :
-    if(rand1->type == Control::INTEGER && rand2->type == Control::INTEGER){
-        result->ctrlVal = to_string(atoi(rand1->ctrlVal.c_str()) + atoi(rand2->ctrlVal.c_str()));
+    if(rand1->controlType == Control::INTEGER && rand2->controlType == Control::INTEGER){
+        result->controlVal = to_string(atoi(rand1->controlVal.c_str()) + atoi(rand2->controlVal.c_str()));
         break ;
       }
     else{
@@ -206,8 +199,8 @@ void CSEMachine::applyBinaryOPR(int type){
     break ;
 
       case Control::SUBTRACT :
-    if(rand1->type == Control::INTEGER && rand2->type == Control::INTEGER){
-        result->ctrlVal = to_string(atoi(rand1->ctrlVal.c_str()) - atoi(rand2->ctrlVal.c_str()));
+    if(rand1->controlType == Control::INTEGER && rand2->controlType == Control::INTEGER){
+        result->controlVal = to_string(atoi(rand1->controlVal.c_str()) - atoi(rand2->controlVal.c_str()));
         break ;
       }
     else {
@@ -216,8 +209,8 @@ void CSEMachine::applyBinaryOPR(int type){
       }
     break ;
       case Control::MULTIPLY :
-    if(rand1->type == Control::INTEGER && rand2->type == Control::INTEGER){
-        result->ctrlVal = to_string(atoi(rand1->ctrlVal.c_str()) * atoi(rand2->ctrlVal.c_str()));
+    if(rand1->controlType == Control::INTEGER && rand2->controlType == Control::INTEGER){
+        result->controlVal = to_string(atoi(rand1->controlVal.c_str()) * atoi(rand2->controlVal.c_str()));
         break ;
       }
     else{
@@ -226,8 +219,8 @@ void CSEMachine::applyBinaryOPR(int type){
       }
     break ;
       case Control::DIVIDE :
-    if(rand1->type == Control::INTEGER && rand2->type == Control::INTEGER) {
-        result->ctrlVal = to_string(atoi(rand1->ctrlVal.c_str()) / atoi(rand2->ctrlVal.c_str()));
+    if(rand1->controlType == Control::INTEGER && rand2->controlType == Control::INTEGER) {
+        result->controlVal = to_string(atoi(rand1->controlVal.c_str()) / atoi(rand2->controlVal.c_str()));
         break ;
       }
     else {
@@ -243,7 +236,7 @@ void CSEMachine::applyBinaryOPR(int type){
 
 }
 
-void CSEMachine::escapePrintStr(string printStr){
+void CSEMachine::escapeSeqence(string printStr){
   for( int i = 0 ; i < printStr.length() ; i++ ){
   char ch1 = printStr.at(i) ;
     if( ch1 == '\\'){
@@ -269,18 +262,18 @@ void CSEMachine::applyThisRator(Control* rator){
     Control* toPush;
     if(rator->variables.front() == "Print"){
         string print_str = execStack.top()->toStr();
-        escapePrintStr(print_str); //WHY?
+        escapeSeqence(print_str); //WHY?
         execStack.pop();
         toPush = new Control(Control::DUMMY);
     }else if(rator->variables.front() == "Order"){
         Control *tuple = execStack.top() ;
         execStack.pop();
         Control *order = new Control();
-        order->type = Control::INTEGER;
-        if( tuple->type == Control::TUPLE){
-            order->ctrlVal = to_string(tuple->ctrlTuples.size());
-        }else if( tuple->type == Control::NIL ){
-            order->ctrlVal = to_string(0);
+        order->controlType = Control::INTEGER;
+        if( tuple->controlType == Control::TUPLE){
+            order->controlVal = to_string(tuple->ctrlTuples.size());
+        }else if( tuple->controlType == Control::NIL ){
+            order->controlVal = to_string(0);
         }else{
             cout <<  "Invalid argument for 'Order'" << endl ;
             exit(1) ;
@@ -289,31 +282,31 @@ void CSEMachine::applyThisRator(Control* rator){
     }else if(rator->variables.front() == "Isinteger"){
         temp = execStack.top();
         execStack.pop();
-        toPush = new Control(temp->type == Control::INTEGER ? Control::TRUE : Control::FALSE);
+        toPush = new Control(temp->controlType == Control::INTEGER ? Control::TRUE : Control::FALSE);
     }else if(rator->variables.front() == "Istruthvalue"){
         temp = execStack.top();
         execStack.pop();
-        toPush = new Control((temp->type == Control::TRUE || temp->type == Control::FALSE) ? Control::TRUE : Control::FALSE);
+        toPush = new Control((temp->controlType == Control::TRUE || temp->controlType == Control::FALSE) ? Control::TRUE : Control::FALSE);
     }else if(rator->variables.front() == "Isstring"){
         temp = execStack.top();
         execStack.pop();
-        toPush = new Control(temp->type == Control::STRING ? Control::TRUE : Control::FALSE);
+        toPush = new Control(temp->controlType == Control::STRING ? Control::TRUE : Control::FALSE);
     }else if(rator->variables.front() == "Istuple"){
         temp = execStack.top();
         execStack.pop();
-        toPush = new Control((temp->type == Control::TUPLE || temp->type == Control::NIL) ? Control::TRUE : Control::FALSE);
+        toPush = new Control((temp->controlType == Control::TUPLE || temp->controlType == Control::NIL) ? Control::TRUE : Control::FALSE);
     }else if(rator->variables.front() == "Isfunction"){
         temp = execStack.top();
         execStack.pop();
-        toPush = new Control(temp->type == Control::LAMBDA ? Control::TRUE : Control::FALSE);
+        toPush = new Control(temp->controlType == Control::LAMBDA ? Control::TRUE : Control::FALSE);
     }else if(rator->variables.front() == "Isdummy"){
         temp = execStack.top();
         execStack.pop();
-        toPush = new Control(temp->type == Control::DUMMY ? Control::TRUE : Control::FALSE);
+        toPush = new Control(temp->controlType == Control::DUMMY ? Control::TRUE : Control::FALSE);
     }else if(rator->variables.front() == "Stem"){
-        if(execStack.top()->type == Control::STRING){
+        if(execStack.top()->controlType == Control::STRING){
             Control *strControl= new Control(Control::STRING);
-            strControl->ctrlVal = execStack.top()->ctrlVal.substr(0, 1);
+            strControl->controlVal = execStack.top()->controlVal.substr(0, 1);
             execStack.pop();
             toPush = strControl;
         }else{
@@ -321,9 +314,9 @@ void CSEMachine::applyThisRator(Control* rator){
             exit(1);
         }
     }else if(rator->variables.front() == "Stern"){
-        if(execStack.top()->type == Control::STRING){
+        if(execStack.top()->controlType == Control::STRING){
             Control *strControl = new Control(Control::STRING);
-            strControl->ctrlVal = execStack.top()->ctrlVal.substr(1, execStack.top()->ctrlVal.length()-1);
+            strControl->controlVal = execStack.top()->controlVal.substr(1, execStack.top()->controlVal.length()-1);
             execStack.pop();
             toPush = strControl;
         }else{
@@ -331,9 +324,9 @@ void CSEMachine::applyThisRator(Control* rator){
             exit(1);
         }
     }else if(rator->variables.front() == "ItoS"){
-        if(execStack.top()->type == Control::INTEGER){
+        if(execStack.top()->controlType == Control::INTEGER){
            Control *strControl = new Control(Control::STRING);
-           strControl->ctrlVal = execStack.top()->ctrlVal;
+           strControl->controlVal = execStack.top()->controlVal;
            execStack.pop();
            toPush = strControl;
         }else{
@@ -343,23 +336,23 @@ void CSEMachine::applyThisRator(Control* rator){
     }else if(rator->variables.front() == "Conc"){ //could have check for string here
         Control *concl = new Control(Control::NAME);
         concl->variables.push_back("Conclambda");
-        concl->variables.push_back(execStack.top()->ctrlVal);
+        concl->variables.push_back(execStack.top()->controlVal);
         execStack.pop();
         toPush = concl;
     }else if(rator->variables.front() == "Conclambda"){
-        Control *concatVars = new Control(Control::STRING, rator->variables.at(1)+ execStack.top()->ctrlVal);
+        Control *concatVars = new Control(Control::STRING, rator->variables.at(1)+ execStack.top()->controlVal);
         execStack.pop();
         toPush = concatVars;
     }else if(rator->variables.front() == "Null"){
         Control *boolR = new Control();
-        if(execStack.top()->type == Control::NIL || (execStack.top()->type == Control::TUPLE && execStack.top()->ctrlTuples.empty()))
-            boolR->type = Control::TRUE;
+        if(execStack.top()->controlType == Control::NIL || (execStack.top()->controlType == Control::TUPLE && execStack.top()->ctrlTuples.empty()))
+            boolR->controlType = Control::TRUE;
         else
-            boolR->type = Control::FALSE;
+            boolR->controlType = Control::FALSE;
         execStack.pop();
         toPush = boolR;
     }else{
-        cout << "ERROR: value:%" << rator->ctrlVal << "%type:" << rator->type << endl;
+        cout << "ERROR: value:%" << rator->controlVal << "%type:" << rator->controlType << endl;
         printCS();
         return;
     }
@@ -376,14 +369,14 @@ void CSEMachine::handleName(Control* temp, Control* currControl, Control* rator,
             control.pop_back();
             execStack.push(temp) ;
         } else {
-            cout << " Unknown name" +  currControl->ctrlVal << endl;
+            cout << " Unknown name" +  currControl->controlVal << endl;
         }
     }
 }
 
 void CSEMachine::rule411(Control* temp, Control* currControl, Control* rator, Environment* newEnv, int deltaIndex){
     newEnv = createNewEnvironment();
-    newEnv->assignParent(environmentMap.find(rator->associatedENV)->second);
+    newEnv->assignParent(environmentMap.find(rator->ass_env)->second);
     currEnvironment = newEnv ;
     if( rator->variables.size() == 1 ){
         currEnvironment->symbolTable[rator->variables.at(0)] = execStack.top();
@@ -391,7 +384,7 @@ void CSEMachine::rule411(Control* temp, Control* currControl, Control* rator, En
     } else {
         temp = execStack.top(); //Contain tuple pls
         execStack.pop() ;
-        if( temp->type == Control::TUPLE && rator->variables.size() == temp->ctrlTuples.size() )
+        if( temp->controlType == Control::TUPLE && rator->variables.size() == temp->ctrlTuples.size() )
         {
             for( int i = 0 ; i < rator->variables.size() ; i++ )
             {
@@ -413,7 +406,7 @@ void CSEMachine::rule411(Control* temp, Control* currControl, Control* rator, En
 void CSEMachine::rule12(Control* temp, Control* currControl, Control* rator, Environment* newEnv, int deltaIndex){
     Control *eta = new Control(execStack.top()) ;
     execStack.pop();
-    eta->type = Control::ETA;
+    eta->controlType = Control::ETA;
     execStack.push(eta);
 }
 
@@ -422,13 +415,13 @@ void CSEMachine::rule13(Control* temp, Control* currControl, Control* rator, Env
     control.push_back(new Control(Control::GAMMA));
     execStack.push(rator);
     Control *lambda = new Control(Control::LAMBDA, &(rator->variables), NULL, rator->index) ;
-    lambda->associatedENV = rator->associatedENV;
+    lambda->ass_env = rator->ass_env;
     execStack.push(lambda);
 }
 
 void CSEMachine::rule10(Control* temp, Control* currControl, Control* rator, Environment* newEnv, int deltaIndex){
-    if( execStack.top()->type == Control::INTEGER ){
-    temp = rator->ctrlTuples.at(atoi(execStack.top()->ctrlVal.c_str()) - 1) ;
+    if( execStack.top()->controlType == Control::INTEGER ){
+    temp = rator->ctrlTuples.at(atoi(execStack.top()->controlVal.c_str()) - 1) ;
     execStack.pop();
     execStack.push(temp) ;
     } else{
@@ -442,13 +435,13 @@ void CSEMachine::handleGAMMA(Control* temp, Control* currControl, Control* rator
     control.pop_back();
     rator = execStack.top() ;
     execStack.pop();
-    if( rator->type== Control::LAMBDA ){
+    if( rator->controlType== Control::LAMBDA ){
         rule411(temp, currControl, rator, newEnv, deltaIndex);
-    }else if( rator->type == Control::YSTAR ){
+    }else if( rator->controlType == Control::YSTAR ){
         rule12(temp, currControl, rator, newEnv, deltaIndex);
-    } else if( rator->type == Control::ETA ){
+    } else if( rator->controlType == Control::ETA ){
         rule13(temp, currControl, rator, newEnv, deltaIndex);
-    }else if(rator->type == Control::TUPLE){ //Rule 10
+    }else if(rator->controlType == Control::TUPLE){ //Rule 10
         rule10(temp, currControl, rator, newEnv, deltaIndex);
     } else {
         applyThisRator(rator);
@@ -458,22 +451,22 @@ void CSEMachine::handleGAMMA(Control* temp, Control* currControl, Control* rator
 
 void CSEMachine::handleBeta(Control* temp, Control* currControl, Control* rator, Environment* newEnv, int deltaIndex){
     control.pop_back();
-    if(execStack.top()->type == Control::TRUE){
+    if(execStack.top()->controlType == Control::TRUE){
         control.pop_back();
-        if(control.at(control.size() - 1)->type == Control::DELTA){
+        if(control.at(control.size() - 1)->controlType == Control::DELTA){
             deltaIndex = control.at(control.size() -1)->index;
             control.pop_back();
         }else{
-            cout << "Delta Expected " << control.at(control.size() -1)->type << endl;
+            cout << "Delta Expected " << control.at(control.size() -1)->controlType << endl;
             exit(1);
         }
-    }else if(execStack.top()->type == Control::FALSE){
-        if(control.at(control.size() - 1)->type == Control::DELTA){
+    }else if(execStack.top()->controlType == Control::FALSE){
+        if(control.at(control.size() - 1)->controlType == Control::DELTA){
             deltaIndex = control.at(control.size() -1)->index;
             control.pop_back();
             control.pop_back();
         }else{
-            cout << "Delta Expected, found, " << control.at(control.size() -1)->type << endl;
+            cout << "Delta Expected, found, " << control.at(control.size() -1)->controlType << endl;
             exit(1);
         }
     }else{
@@ -489,7 +482,7 @@ void CSEMachine::handleBeta(Control* temp, Control* currControl, Control* rator,
 void CSEMachine::handleEnv(Control* temp, Control* currControl, Control* rator, Environment* newEnv, int deltaIndex){
     temp = execStack.top() ;
     execStack.pop();
-    if( execStack.top()->type == Control::ENV && execStack.top()->index == currControl->index ){
+    if( execStack.top()->controlType == Control::ENV && execStack.top()->index == currControl->index ){
         control.pop_back();
         execStack.pop();
         execStack.push(temp) ;
@@ -505,7 +498,7 @@ void CSEMachine::handleEnv(Control* temp, Control* currControl, Control* rator, 
 void CSEMachine::handleTau(Control* temp, Control* currControl, Control* rator, Environment* newEnv, int deltaIndex){
     control.pop_back();
     temp = new Control() ;
-    temp->type = Control::TUPLE;
+    temp->controlType = Control::TUPLE;
     temp->ctrlTuples.clear();
     for(int i=0; i<currControl->index; i++ )
     {
@@ -518,8 +511,8 @@ void CSEMachine::handleTau(Control* temp, Control* currControl, Control* rator, 
 
 void CSEMachine::handleNeg(Control* temp, Control* currControl, Control* rator, Environment* newEnv, int deltaIndex){
     control.pop_back();
-    if(execStack.top()->type == Control::INTEGER )
-        execStack.top()->ctrlVal = to_string(-1*atoi(execStack.top()->ctrlVal.c_str()));
+    if(execStack.top()->controlType == Control::INTEGER )
+        execStack.top()->controlVal = to_string(-1*atoi(execStack.top()->controlVal.c_str()));
     else
     {
         cout << "Neg: Int not found" << endl;
@@ -537,7 +530,7 @@ void CSEMachine::execCSE(){
         //printCS();
         currControl = control.at(control.size()-1);
         temp = NULL;
-        switch(currControl->type){
+        switch(currControl->controlType){
         case Control::INTEGER :
         case Control::STRING :
         case Control::TRUE :
@@ -556,7 +549,7 @@ void CSEMachine::execCSE(){
             execStack.push(currControl) ;
             break ;
         case Control::LAMBDA : //CSE Rule 2
-            currControl->associatedENV = currEnvironment->id;
+            currControl->ass_env = currEnvironment->id;
             control.pop_back();
             execStack.push(currControl) ;
             break ;
@@ -566,8 +559,8 @@ void CSEMachine::execCSE(){
         case Control::NOT :
             control.pop_back();
             temp = execStack.top() ;
-            if( temp->type == Control::TRUE || temp->type == Control::FALSE ){
-                temp->type =  temp->type ==  Control::TRUE ? Control::FALSE : Control::TRUE;
+            if( temp->controlType == Control::TRUE || temp->controlType == Control::FALSE ){
+                temp->controlType =  temp->controlType ==  Control::TRUE ? Control::FALSE : Control::TRUE;
             }else{
                 cout << "Expecting a bool value for operator 'not'" << endl;
                 exit(1) ;
@@ -588,7 +581,7 @@ void CSEMachine::execCSE(){
         case Control::MULTIPLY :
         case Control::DIVIDE :
         case Control::EXP :
-            applyBinaryOPR(currControl->type) ;
+            binaryOperation(currControl->controlType) ;
             break ;
         case Control::TAU:
             handleTau(temp, currControl, rator, newEnv, deltaIndex);
@@ -603,7 +596,7 @@ void CSEMachine::execCSE(){
             handleBeta(temp, currControl, rator, newEnv, deltaIndex);
             break;
         default:
-            cout << "Unknown Control Type: " << currControl->type << endl;
+            cout << "Unknown Control Type: " << currControl->controlType << endl;
             break;
         }
     }
