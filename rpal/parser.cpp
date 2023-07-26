@@ -18,7 +18,7 @@ void parser::printAST(){
 
 void parser::printST(){
     parse();
-    TreeStandardizer *ts = new TreeStandardizer(treeStack.top());
+    Standardizer *ts = new Standardizer(treeStack.top());
     if (!treeStack.empty())
         treePrettyPrint(treeStack.top(), 0);
     //evaluateProg();
@@ -29,7 +29,7 @@ void parser::printST(){
 void parser::evaluateProg(){
     //Evaluation will only happen if the interpreter was called without switches
     parse();
-    TreeStandardizer *ts = new TreeStandardizer(treeStack.top());
+    Standardizer *ts = new Standardizer(treeStack.top());
     //No need to print
     CSEMachine* cse = new CSEMachine();
     cse->run(treeStack.top());

@@ -2,7 +2,7 @@
 #define PARSER_H_
 #include "lexer.h"
 #include <stack>
-#include "TreeStandardizer.h"
+#include "Standardizer.h"
 #include "CSEMachine.h"
 
 using namespace std;
