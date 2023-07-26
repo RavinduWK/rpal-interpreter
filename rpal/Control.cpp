@@ -1,23 +1,42 @@
     #include "Control.h"
 
+
+    // Function to convert Control type to a string representation
     string Control::toStr()
     {
-        string str ;
-        switch(type)
+        string s ;
+        switch(controlType)
         {
-        case DELTA :
-            str = "<D" + std::to_string(index) + ">" ;
-            return str;
-        case NAME :
-            return variables.at(0);//.front() ; //not sure y front() is not working
         case LAMBDA :
-            str = "[lambda closure: " ;
+            s = "[lambda closure: " ;
             for( int i = 0 ; i < variables.size() ; i++ )
-                str += variables.at(i) + ": " ;
-            str += to_string(index) + "]" ;
-            return str ;
+                s += variables.at(i) + ": " ;
+            s += to_string(index) + "]" ;
+            return s ;
         case GAMMA :
             return "Gamma" ;
+        case DELTA :
+            s = "<D" + std::to_string(index) + ">" ;
+            return s;
+            case NIL :
+            return "nil" ;
+        case DUMMY :
+            return "dummy" ;
+        case YSTAR :
+            return "Y" ;
+        case TAU :
+            s = "<T" + to_string(index) + ">"  ;
+            return s;
+        case STRING :
+            return controlVal +"";
+        case INTEGER :
+            s = controlVal + "" ;
+            return s;
+        case ENV :
+            s = "e" + to_string(index) ;
+            return s;
+        case NAME :
+            return variables.at(0);//.front() 
         case AUG :
           return "AUG" ;
         case BETA :
@@ -30,16 +49,6 @@
           return "NOT" ;
         case GR :
             return ">" ;
-        case GE :
-            return ">=" ;
-        case LS :
-            return "<" ;
-        case LE :
-            return "<=" ;
-        case EQ :
-            return "=" ;
-        case NE :
-            return "!=" ;
         case ADD :
             return "+" ;
         case SUBTRACT :
@@ -58,50 +67,44 @@
             return "true" ;
         case FALSE :
             return "false" ;
-        case NIL :
-            return "nil" ;
-        case DUMMY :
-            return "dummy" ;
-        case YSTAR :
-            return "Y" ;
-        case TAU :
-            str = "<T" + to_string(index) + ">"  ;
-            return str;
-        case STRING :
-            return ctrlVal +"";
-        case INTEGER :
-            str = ctrlVal + "" ;
-            return str;
-        case ENV :
-            str = "e" + to_string(index) ;
-            return str;
+        case GE :
+            return ">=" ;
+        case LS :
+            return "<" ;
+        case LE :
+            return "<=" ;
+        case EQ :
+            return "=" ;
+        case NE :
+            return "!=" ;
         case ETA :
-            str = "<ETA," + to_string(index) ;
+            s = "<ETA," + to_string(index) ;
             for( int i = 0 ; i < variables.size() ; i++ )
-                str += "," + variables.at(i) ;
-            str += ">" ;
-            return str ;
+                s += "," + variables.at(i) ;
+            s += ">" ;
+            return s ;
         case TUPLE :
-            str = "(" ;
+            s = "(" ;
             for( int i = 0 ; i < ctrlTuples.size() ; i++ )
             {
-                str += ctrlTuples.at(i)->toStr() ;
+                s += ctrlTuples.at(i)->toStr() ;
                 if( i != ctrlTuples.size()-1 )
-                    str += ", " ;
+                    s += ", " ;
             }
-            str += ")" ;
-            return str ;
+            s += ")" ;
+            return s ;
         default :
             return "unknown" ;
         }
     }
 
+  // Constructor that creates a Control object by copying another Control object
   Control::Control(Control *cntrl)
   {
     index = cntrl->index;
-    ctrlVal = cntrl->ctrlVal ;
-    type = cntrl->type ;
-    associatedENV = cntrl->associatedENV;
+    controlVal = cntrl->controlVal ;
+    controlType = cntrl->controlType ;
+    ass_env = cntrl->ass_env;
     if( !cntrl->variables.empty() ){
       for(int i=0;i<cntrl->variables.size();i++)
     variables.push_back(cntrl->variables.at(i)) ;
@@ -112,17 +115,19 @@
     }
   }
 
+  // Constructor to create a Control object with the given type and index
   Control::Control(Control::Type type, int index){
     if(Control::DELTA != type){
       printf ("Control::DELTA 's constructor called for : %d", type);
     };
-    this->type = type;
+    this->controlType = type;
     this->index = index;
     ctrlStruct = new vector<Control *>();
   }
 
+  // Constructor to create a Control object with the given type, variables, and delta index
   Control::Control(Control::Type type,vector<string> *vars, Control *del_ptr, int deltaindex){
-    this->type = type;//Must be LAMBDA
+    this->controlType = type;//Must be LAMBDA
     index = deltaindex;
     if(vars != NULL){
       for(int i=0;i<vars->size();i++){
@@ -131,33 +136,40 @@
     }
   }
 
+  // Constructor to create a Control object with the given type, index, and watever flag
   Control::Control(Control::Type type, int index, bool watever){
     if(type != Control::TAU && type != Control::ENV){
       printf("Control::TAU 's constructor called for : %d" , type );
     }
-    this->type = type;
+    this->controlType = type;
     this->index = index;
   }
 
+  // Constructor to create a Control object with the given variable value and type
   Control::Control(string var_value, Control::Type type ){
-    this->type = type;
+    this->controlType = type;
     variables.push_back(var_value);
   }
 
+
+  // Constructor to create a Control object with the given type and value
   Control::Control(Control::Type type, string value){
-    this->type = type;
-    ctrlVal = value;
+    this->controlType = type;
+    controlVal = value;
   }
 
+  // Default constructor
   Control::Control(){
   }
 
+  // Constructor to create a Control object with the given type
   Control::Control(Control::Type type) {
-      this->type = type;
+      this->controlType = type;
   }
 
+// Function to pretty-print the Control object (specific to DELTA type)
 void Control::pretty_print(){
-  if(type!=Control::DELTA){
+  if(controlType!=Control::DELTA){
     printf("pretty_print called on non delta node, Not a delta node, cannot pretty print");
   };
   cout << toStr() << " ";
@@ -167,6 +179,7 @@ void Control::pretty_print(){
   cout << endl;
 }
 
+// Function to add a Control object to ctrlStruct based on the type of the treeNode
 void Control::addCtrl(treeNode* node, int type, string value, vector<string> *variables, Control* del_ptr, int deltas_size){
   int tau_count;
   Control *temp = NULL;
@@ -261,5 +274,3 @@ void Control::addCtrl(treeNode* node, int type, string value, vector<string> *va
   };
   ctrlStruct->push_back(temp);
 }
-
-

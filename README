@@ -1,15 +1,20 @@
-COP 5556 - Programming Language Principles
+CS 3512  - Programming Languages
 
-Project2 : RPAL Interpreter
+Programming Project 01
 
-Name: Sachin Edlabadkar
+Group Members
+	200551R - Sahassaka M.A.T.
+	200708G - Wickramage R.Y.
+	200405B - Muthumala L.G.P
+	200360F - Madawa G.C.H.O.
+
 
 1. The project can be compiled using:
 
 	$ make 
-	- An executable is generated in the same folder by the name of p2
+	- An executable is generated in the same folder by the name of rpal20
 
-2. Usage: ./p2 [-l] [-ast] [-st] filename
+2. Usage: ./rpal20 [-l] [-ast] [-st] filename
 
 	-l listing of input
 	-ast  generates abstract syntax tree

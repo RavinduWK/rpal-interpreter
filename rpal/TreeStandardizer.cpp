@@ -1,10 +1,3 @@
-/*
- * TreeStandardizer.cpp
- *
- *  Created on: Apr 20, 2016
- *      Author: sachin
- */
-
 #include "TreeStandardizer.h"
 
 TreeStandardizer::TreeStandardizer(treeNode* topNode) {

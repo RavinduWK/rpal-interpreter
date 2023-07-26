@@ -1,10 +1,3 @@
-/*
- * CSEMachine.h
- *
- *  Created on: Apr 21, 2016
- *      Author: sachin
- */
-
 #ifndef RPAL_COMPILER_CSEMACHINE_H_
 #define RPAL_COMPILER_CSEMACHINE_H_
 #include <vector>
@@ -41,11 +34,11 @@ class CSEMachine {
     void flattenTree(treeNode*, Control *,vector<Control *> *);
     void init(treeNode*);
     void deltaPrint();
-    void applyBinaryOPR(int);
+    void binaryOperation(int);
     void applyThisRator(Control*);
     void printCS();
     bool checkInbuilt(string);
-    void escapePrintStr(string);
+    void escapeSeqence(string);
     void rule411(Control*, Control*, Control*, Environment*, int);
     void rule12(Control*, Control*, Control*, Environment*, int);
     void rule13(Control*, Control*, Control*, Environment*, int);

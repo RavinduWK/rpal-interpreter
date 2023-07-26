@@ -1,10 +1,3 @@
-/*
- * lexer.cpp
- *
- *  Created on: Mar 1, 2016
- *      Author: sachin
- */
-
 #include "lexer.h"
 
 using namespace std;
@@ -48,42 +41,42 @@ bool lexer::isCommentChar(char c){
 }
 
 string lexer::tokenIdentifier(){
-	string tokStr= "";
-	char nextPeek;
-	char nextChar;
+	string string_token= "";
+	char next_peek;
+	char next_char;
 	do {
-		sourceFile->get(nextChar);
+		sourceFile->get(next_char);
 		charCount++;
-		tokStr += nextChar;
-		nextPeek = sourceFile->peek();
-	}while (!(EOF == nextPeek) && (isalpha(nextPeek) || isdigit(nextPeek) || (95 == nextPeek)));
-	return tokStr;
+		string_token += next_char;
+		next_peek = sourceFile->peek();
+	}while (!(EOF == next_peek) && (isalpha(next_peek) || isdigit(next_peek) || (95 == next_peek)));
+	return string_token;
 }
 
 string lexer::tokenInteger(){
-	string tokStr= "";
-	char nextPeek;
-	char nextChar;
+	string string_token= "";
+	char next_peek;
+	char next_char;
 	do {
-		sourceFile->get(nextChar);
+		sourceFile->get(next_char);
 		charCount++;
-		tokStr += nextChar;
-		nextPeek = sourceFile->peek();
-	}while (!(EOF == nextPeek) && isdigit(nextPeek));
-	return tokStr;
+		string_token += next_char;
+		next_peek = sourceFile->peek();
+	}while (!(EOF == next_peek) && isdigit(next_peek));
+	return string_token;
 }
 
 string lexer::tokenStrings(){
-	string tokStr= "";
-	char nextPeek;
-	char nextChar;
+	string string_token= "";
+	char next_peek;
+	char next_char;
 	do{
-		sourceFile->get(nextChar);
+		sourceFile->get(next_char);
 		charCount++;
-		tokStr += nextChar;
-		nextPeek = sourceFile->peek();
-		if (nextChar == '\\'){
-		    if ((nextPeek == 't' || nextPeek == 'n' || nextPeek == '\\' || nextPeek == '\''))
+		string_token += next_char;
+		next_peek = sourceFile->peek();
+		if (next_char == '\\'){
+		    if ((next_peek == 't' || next_peek == 'n' || next_peek == '\\' || next_peek == '\''))
 		    {
 		        continue; //Valid escape sequence
 		    } else {
@@ -91,62 +84,62 @@ string lexer::tokenStrings(){
 		        exit(0);
 		    }
 		}
-	} while (!(EOF == nextPeek) && !(39 == nextPeek));
-	sourceFile->get(nextChar);
-	tokStr += nextChar;
-	return tokStr;
+	} while (!(EOF == next_peek) && !(39 == next_peek));
+	sourceFile->get(next_char);
+	string_token += next_char;
+	return string_token;
 }
 
 string lexer::tokenSpaces(){
-	string tokStr= "";
-	char nextPeek;
-	char nextChar;
+	string string_token= "";
+	char next_peek;
+	char next_char;
 	do{
-		sourceFile->get(nextChar);
+		sourceFile->get(next_char);
 		charCount++;
-		if (10 == nextChar || 13 == nextChar){
+		if (10 == next_char || 13 == next_char){
 			charCount = 1;
 			lineCount++;
 		}
-		tokStr += nextChar;
-		nextPeek = sourceFile->peek();
-	} while (!(EOF == nextPeek) && isspace(nextPeek));
-	return tokStr;
+		string_token += next_char;
+		next_peek = sourceFile->peek();
+	} while (!(EOF == next_peek) && isspace(next_peek));
+	return string_token;
 }
 
 string lexer::tokenComment(){
-	string tokStr= "";
-	char nextPeek;
-	char nextChar;
-	sourceFile->get(nextChar);
+	string string_token= "";
+	char next_peek;
+	char next_char;
+	sourceFile->get(next_char);
 	charCount++;
-	tokStr += nextChar;
-	nextPeek = sourceFile->peek();
-	if (47 == nextPeek){
-		sourceFile->get(nextChar);
-		tokStr += nextChar;
+	string_token += next_char;
+	next_peek = sourceFile->peek();
+	if (47 == next_peek){
+		sourceFile->get(next_char);
+		string_token += next_char;
 		do{
-			sourceFile->get(nextChar);
-			tokStr += nextChar;
-			nextPeek = sourceFile->peek();
-		} while (!(EOF == nextPeek) && !(10 == nextPeek || 13 == nextPeek));
-		return tokStr;
+			sourceFile->get(next_char);
+			string_token += next_char;
+			next_peek = sourceFile->peek();
+		} while (!(EOF == next_peek) && !(10 == next_peek || 13 == next_peek));
+		return string_token;
 	} else {
-		return tokStr;
+		return string_token;
 	}
 }
 
 string lexer::tokenOperator(){
-	string tokStr= "";
-	char nextPeek;
-	char nextChar;
+	string string_token= "";
+	char next_peek;
+	char next_char;
 	do{
-		sourceFile->get(nextChar);
+		sourceFile->get(next_char);
 		charCount++;
-		tokStr += nextChar;
-		nextPeek = sourceFile->peek();
-	} while (!(EOF == nextPeek) && isOperatorSymbol(nextPeek));
-	return tokStr;
+		string_token += next_char;
+		next_peek = sourceFile->peek();
+	} while (!(EOF == next_peek) && isOperatorSymbol(next_peek));
+	return string_token;
 }
 
 //This function is called by the read method in parser to fetch the new token.
@@ -157,32 +150,32 @@ string lexer::tokenOperator(){
 token* lexer::getNextToken(){
 	token* tok = new token();
 	string tokenizedLex;
-	int nextChar;
+	int next_char;
 	char readNext;
-	nextChar = sourceFile->peek();
-	if (isalpha(nextChar)){
+	next_char = sourceFile->peek();
+	if (isalpha(next_char)){
 		if (LEXLOGS) printf ("This is an identifier\n");
 		tokenizedLex = tokenIdentifier();
         tok->tokType = TOK_IDENTIFIER;
-	} else if (isdigit(nextChar)) {
+	} else if (isdigit(next_char)) {
 		if (LEXLOGS) printf ("This is an integer\n");
 		tokenizedLex = tokenInteger();
 		tok->tokType = TOK_INTEGER;
-	} else if (39 == nextChar){
+	} else if (39 == next_char){
 		if (LEXLOGS) printf ("This is a string\n");
 		tokenizedLex = tokenStrings();
 		tok->tokType = TOK_STRING;
-	} else if (isspace(nextChar)){
+	} else if (isspace(next_char)){
 		if (LEXLOGS) printf ("This is an space\n");
 		tokenizedLex = tokenSpaces();
 		tok->tokType = TOK_DELETE;
-	} else if (isPunction(nextChar)){
+	} else if (isPunction(next_char)){
 		if (LEXLOGS) printf ("This is a punction\n");
 		sourceFile->get(readNext);
 		charCount++;
 		tokenizedLex = readNext;
 		tok->tokType = TOK_PUNCTION;
-	} else if (47 == nextChar) {
+	} else if (47 == next_char) {
 		tokenizedLex = tokenComment();
 		if (!tokenizedLex.compare("/")){
 			if (LEXLOGS) printf ("This is an operator\n");
@@ -191,11 +184,11 @@ token* lexer::getNextToken(){
 			if (LEXLOGS) printf ("This is a comment\n");
 			tok->tokType = TOK_DELETE;
 		}
-	} else if (isOperatorSymbol(nextChar)){
+	} else if (isOperatorSymbol(next_char)){
 		if (LEXLOGS) printf ("This is an operator\n");
 		tokenizedLex = tokenOperator();
 		tok->tokType = TOK_OPERATOR;
-	} else if (EOF == nextChar) {
+	} else if (EOF == next_char) {
 		if (LEXLOGS) printf ("EOF reached\n");
 		tok->tokType = TOK_EOF;
 	}
